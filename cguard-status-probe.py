@@ -113,7 +113,11 @@ def probe(component, conf):
     timeout = conf.get("timeout_seconds", 12)
     slow = conf.get("slow_seconds", 5)
     accept = set(component.get("accept_codes") or [])
-    marker = component.get("marker") or ""
+    # `marker` (uno) o `markers` (vale cualquiera): desde fuera de casa el CRM
+    # manda a las IP de nube a la verificación humana, y esa página también
+    # demuestra que el borde, nginx y el API están vivos.
+    markers = [m for m in ([component.get("marker")] + list(component.get("markers") or [])) if m]
+    marker = markers[0] if markers else ""
 
     def one():
         code, body, secs, err = fetch(component["url"], timeout)
@@ -123,7 +127,7 @@ def probe(component, conf):
             return "down", f"{err or ('http ' + str(code))}", secs
         if BROKEN.search(body) and code not in accept:
             return "down", "página rota del borde", secs
-        if marker and marker not in body:
+        if markers and not any(m in body for m in markers):
             return "down", "respondió pero sin el contenido esperado", secs
         if secs > slow:
             return "degraded", f"lento ({secs:.1f} s)", secs

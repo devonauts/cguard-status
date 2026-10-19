@@ -16,7 +16,11 @@
         "en": "CRM (app.cguardpro.com)"
       },
       "url": "https://app.cguardpro.com/",
-      "marker": "cg-copia"
+      "markers": [
+        "cg-copia",
+        "Verificación de acceso"
+      ],
+      "_nota": "Desde una IP de nube el CRM responde con la verificación humana; esa página también vale como «vivo»."
     },
     {
       "id": "api",
