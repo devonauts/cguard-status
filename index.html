@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estado de CGuard Pro</title>
+<meta name="description" content="Estado en tiempo real de la plataforma CGuard Pro: CRM, API, apps, portal del cliente, panel de socios y radio.">
+<meta http-equiv="refresh" content="300">
+<link rel="alternate" type="application/atom+xml" title="Estado de CGuard Pro" href="feed.xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v9c0 7.5 5.1 12.4 12 14 6.9-1.6 12-6.5 12-14V7z' fill='%230ea5e9'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#0b1220;--card:#111a2e;--line:#1f2a44;--fg:#e6edf7;--muted:#8b98b3;--ok:#22c55e;--warn:#f59e0b;--down:#ef4444;--maint:#38bdf8;--none:#2a3650}
+@media (prefers-color-scheme: light){:root{--bg:#f5f7fb;--card:#fff;--line:#e3e8f0;--fg:#0f172a;--muted:#5b6b86;--none:#e3e8f0}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 56px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}.brand svg{width:26px;height:26px}
+select.lang{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:5px 8px;font-size:13px}
+.hero{border-radius:14px;padding:18px 20px;color:#fff;display:flex;align-items:center;gap:14px;font-size:20px;font-weight:700}
+.hero small{display:block;font-size:13px;font-weight:400;opacity:.9}
+.hero.ok{background:#15803d}.hero.degraded{background:#b45309}.hero.partial{background:#b91c1c}.hero.major{background:#7f1d1d}.hero.maintenance{background:#0369a1}.hero.unknown{background:#475569}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:16px}
+.note{border-left:4px solid var(--warn);padding:10px 14px;margin-top:16px;background:var(--card);border-radius:10px;font-size:14px}
+.note.ok{border-left-color:var(--ok)}.note.bad{border-left-color:var(--down)}
+h2{font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.comp{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:10px 0;border-top:1px solid var(--line)}.comp:first-of-type{border-top:0}
+.comp .name{font-weight:600}.comp .state{display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap}
+.comp .ext{font-size:12px;color:var(--muted);grid-column:1/-1}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.dot.ok{background:var(--ok)}.dot.degraded{background:var(--warn)}.dot.down{background:var(--down)}.dot.unknown{background:var(--none)}
+.bars{grid-column:1/-1;display:grid;gap:2px;height:26px}
+.bars i{border-radius:2px;background:var(--none)}.bars i.ok{background:var(--ok)}.bars i.degraded{background:var(--warn)}.bars i.down{background:var(--down)}
+.up{grid-column:1/-1;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:4px}
+.m{padding:10px 0;border-top:1px solid var(--line)}.m:first-of-type{border-top:0}.m .t{font-weight:600}.m .d{color:var(--muted);font-size:13px}
+.tl{margin:8px 0 0;padding:0;list-style:none}.tl li{font-size:13px;padding:4px 0 4px 14px;border-left:2px solid var(--line)}.tl li b{color:var(--fg)}.tl li span{color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;color:#fff}
+.tag.scheduled{background:#475569}.tag.in_progress{background:var(--maint)}.tag.completed{background:#15803d}.tag.ongoing{background:var(--down)}
+.tag.investigating{background:var(--down)}.tag.identified{background:#b45309}.tag.monitoring{background:#0369a1}.tag.resolved{background:#15803d}
+form.sub{display:flex;gap:8px;flex-wrap:wrap}form.sub input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:8px 10px;font-size:14px}
+form.sub button{background:#0ea5e9;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}
+.links{font-size:13px;color:var(--muted);margin-top:8px}.links a{color:var(--muted)}
+footer{margin-top:28px;color:var(--muted);font-size:12px;text-align:center}footer a{color:var(--muted)}
+.empty{color:var(--muted);font-size:14px}
+@media (max-width:560px){.hero{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 4 7v9c0 7.5 5.1 12.4 12 14 6.9-1.6 12-6.5 12-14V7z" fill="#0ea5e9"/><path d="m11 16 3.2 3.2L21 12.5" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i="title">Estado de CGuard Pro</span></div>
+  <select class="lang" id="lang" aria-label="Idioma"></select>
+</header>
+<div id="app"><p class="empty" data-i="loading">Cargando…</p></div>
+<footer><span data-i="footer">Se actualiza cada minuto desde un servidor independiente de la plataforma, y cada 5 minutos desde fuera.</span> · <span id="updated"></span><br><span id="backup"></span></footer>
+</div>
+<script id="data" type="application/json">null</script>
+<script id="cfg" type="application/json">{"self": "github", "origin": "https://estado-origen.cguardpro.com", "external": "https://raw.githubusercontent.com/devonauts/cguard-status/data/external.json", "subscribe": "https://api.cguardpro.com/public/estado/suscribir", "backup": "https://devonauts.github.io/cguard-status/", "primary": "https://status.cguardpro.com"}</script>
+<script>
+(function(){
+var I={
+es:{title:"Estado de CGuard Pro",ok:"Todos los sistemas funcionan",degraded:"Rendimiento degradado",partial:"Interrupción parcial",major:"Interrupción mayor",maintenance:"Mantenimiento en curso",unknown:"Sin datos",
+ subok:"Sin incidentes activos.",subdown:"Estamos trabajando en ello. Las apps de vigilante siguen fichando sin conexión.",
+ components:"Componentes",maint:"Mantenimientos programados",incidents:"Incidentes de los últimos 30 días",noMaint:"No hay mantenimientos programados.",noInc:"Sin incidentes en los últimos 30 días.",
+ s_ok:"Operativo",s_degraded:"Lento",s_down:"Caído",s_unknown:"Sin datos",scheduled:"Programado",in_progress:"En curso",completed:"Terminado",ongoing:"En curso",
+ investigating:"Investigando",identified:"Identificado",monitoring:"Vigilando",resolved:"Resuelto",
+ uptime:"Disponibilidad",days:"{n} días",min:"min",affects:"Afecta a",updated:"Actualizado",stale:"(aviso guardado; el API no contesta)",
+ footer:"Se actualiza cada minuto desde un servidor independiente de la plataforma, y cada 5 minutos desde fuera.",duration:"Duración",loading:"Cargando…",
+ outside:"Visto desde fuera",outsideOk:"responde",outsideDown:"no responde",outsideOld:"sin medida reciente",
+ fallback:"Esta es la copia de respaldo, medida desde fuera de nuestra red: la página principal no responde. El historial largo no está disponible hasta que vuelva.",
+ originStale:"La página principal lleva un rato sin actualizarse; estos datos pueden estar viejos.",
+ subscribe:"Avísame por correo",subscribeHelp:"Un correo cuando se programe, empiece o termine un mantenimiento, y por cada actualización de un incidente. Te llegará un mensaje para confirmar.",subscribeBtn:"Suscribirme",subscribeSent:"Revisa tu correo y confirma la suscripción.",subscribeFail:"No se pudo enviar. Inténtalo en un momento.",email:"tu@correo.com",
+ confirmada:"Suscripción confirmada: te avisaremos por correo.",baja:"Listo: ya no te enviaremos avisos.",invalida:"Ese enlace ya no vale. Vuelve a suscribirte si quieres avisos.",
+ feed:"Suscribirse por RSS",backup:"Copia de respaldo fuera de nuestra red",primary:"Página principal"},
+en:{title:"CGuard Pro Status",ok:"All systems operational",degraded:"Degraded performance",partial:"Partial outage",major:"Major outage",maintenance:"Maintenance in progress",unknown:"No data",
+ subok:"No active incidents.",subdown:"We are on it. Guard apps keep clocking in offline.",
+ components:"Components",maint:"Scheduled maintenance",incidents:"Incidents in the last 30 days",noMaint:"No scheduled maintenance.",noInc:"No incidents in the last 30 days.",
+ s_ok:"Operational",s_degraded:"Slow",s_down:"Down",s_unknown:"No data",scheduled:"Scheduled",in_progress:"In progress",completed:"Completed",ongoing:"Ongoing",
+ investigating:"Investigating",identified:"Identified",monitoring:"Monitoring",resolved:"Resolved",
+ uptime:"Uptime",days:"{n} days",min:"min",affects:"Affects",updated:"Updated",stale:"(cached notice; the API is not answering)",
+ footer:"Refreshed every minute from a server independent of the platform, and every 5 minutes from outside.",duration:"Duration",loading:"Loading…",
+ outside:"Seen from outside",outsideOk:"responding",outsideDown:"not responding",outsideOld:"no recent measurement",
+ fallback:"This is the backup copy, measured from outside our network: the main page is not responding. The long history is unavailable until it is back.",
+ originStale:"The main page has not refreshed for a while; this data may be old.",
+ subscribe:"Email me",subscribeHelp:"One email when maintenance is scheduled, starts or ends, and for every incident update. You will get a message to confirm.",subscribeBtn:"Subscribe",subscribeSent:"Check your inbox and confirm the subscription.",subscribeFail:"Could not send. Try again in a moment.",email:"you@example.com",
+ confirmada:"Subscription confirmed: we will email you.",baja:"Done: no more notices will be sent.",invalida:"That link is no longer valid. Subscribe again if you want notices.",
+ feed:"Subscribe via RSS",backup:"Backup copy outside our network",primary:"Main page"},
+pt:{title:"Status da CGuard Pro",ok:"Todos os sistemas operando",degraded:"Desempenho degradado",partial:"Interrupção parcial",major:"Interrupção grave",maintenance:"Manutenção em andamento",unknown:"Sem dados",
+ subok:"Sem incidentes ativos.",subdown:"Estamos trabalhando nisso. Os apps de vigilante continuam registrando ponto sem conexão.",
+ components:"Componentes",maint:"Manutenções programadas",incidents:"Incidentes dos últimos 30 dias",noMaint:"Não há manutenções programadas.",noInc:"Sem incidentes nos últimos 30 dias.",
+ s_ok:"Operacional",s_degraded:"Lento",s_down:"Fora do ar",s_unknown:"Sem dados",scheduled:"Programada",in_progress:"Em andamento",completed:"Concluída",ongoing:"Em andamento",
+ investigating:"Investigando",identified:"Identificado",monitoring:"Monitorando",resolved:"Resolvido",
+ uptime:"Disponibilidade",days:"{n} dias",min:"min",affects:"Afeta",updated:"Atualizado",stale:"(aviso guardado; a API não responde)",
+ footer:"Atualizado a cada minuto de um servidor independente da plataforma, e a cada 5 minutos de fora.",duration:"Duração",loading:"Carregando…",
+ outside:"Visto de fora",outsideOk:"responde",outsideDown:"não responde",outsideOld:"sem medição recente",
+ fallback:"Esta é a cópia de reserva, medida de fora da nossa rede: a página principal não responde. O histórico longo fica indisponível até ela voltar.",
+ originStale:"A página principal está há um tempo sem atualizar; estes dados podem estar velhos.",
+ subscribe:"Avise-me por e-mail",subscribeHelp:"Um e-mail quando uma manutenção for programada, começar ou terminar, e a cada atualização de incidente. Você receberá uma mensagem para confirmar.",subscribeBtn:"Inscrever-me",subscribeSent:"Verifique seu e-mail e confirme a inscrição.",subscribeFail:"Não foi possível enviar. Tente novamente em instantes.",email:"voce@email.com",
+ confirmada:"Inscrição confirmada: avisaremos por e-mail.",baja:"Pronto: não enviaremos mais avisos.",invalida:"Esse link não vale mais. Inscreva-se de novo se quiser avisos.",
+ feed:"Assinar por RSS",backup:"Cópia de reserva fora da nossa rede",primary:"Página principal"},
+fr:{title:"État de CGuard Pro",ok:"Tous les systèmes fonctionnent",degraded:"Performances dégradées",partial:"Panne partielle",major:"Panne majeure",maintenance:"Maintenance en cours",unknown:"Pas de données",
+ subok:"Aucun incident en cours.",subdown:"Nous y travaillons. Les applications des agents continuent de pointer hors ligne.",
+ components:"Composants",maint:"Maintenances programmées",incidents:"Incidents des 30 derniers jours",noMaint:"Aucune maintenance programmée.",noInc:"Aucun incident ces 30 derniers jours.",
+ s_ok:"Opérationnel",s_degraded:"Lent",s_down:"En panne",s_unknown:"Pas de données",scheduled:"Programmée",in_progress:"En cours",completed:"Terminée",ongoing:"En cours",
+ investigating:"En cours d'analyse",identified:"Cause identifiée",monitoring:"Sous surveillance",resolved:"Résolu",
+ uptime:"Disponibilité",days:"{n} jours",min:"min",affects:"Concerne",updated:"Mis à jour",stale:"(avis en cache ; l'API ne répond pas)",
+ footer:"Actualisé chaque minute depuis un serveur indépendant de la plateforme, et toutes les 5 minutes depuis l'extérieur.",duration:"Durée",loading:"Chargement…",
+ outside:"Vu de l'extérieur",outsideOk:"répond",outsideDown:"ne répond pas",outsideOld:"pas de mesure récente",
+ fallback:"Ceci est la copie de secours, mesurée hors de notre réseau : la page principale ne répond pas. L'historique long est indisponible jusqu'à son retour.",
+ originStale:"La page principale ne s'est pas actualisée depuis un moment ; ces données peuvent être anciennes.",
+ subscribe:"Me prévenir par e-mail",subscribeHelp:"Un e-mail quand une maintenance est programmée, commence ou se termine, et à chaque mise à jour d'incident. Vous recevrez un message pour confirmer.",subscribeBtn:"M'abonner",subscribeSent:"Consultez votre boîte mail et confirmez l'abonnement.",subscribeFail:"Envoi impossible. Réessayez dans un instant.",email:"vous@exemple.com",
+ confirmada:"Abonnement confirmé : nous vous préviendrons par e-mail.",baja:"C'est fait : plus aucun avis ne sera envoyé.",invalida:"Ce lien n'est plus valable. Réabonnez-vous si vous voulez des avis.",
+ feed:"S'abonner par RSS",backup:"Copie de secours hors de notre réseau",primary:"Page principale"},
+de:{title:"Status von CGuard Pro",ok:"Alle Systeme laufen",degraded:"Eingeschränkte Leistung",partial:"Teilausfall",major:"Großer Ausfall",maintenance:"Wartung läuft",unknown:"Keine Daten",
+ subok:"Keine aktiven Störungen.",subdown:"Wir arbeiten daran. Die Wächter-Apps stempeln offline weiter.",
+ components:"Komponenten",maint:"Geplante Wartungen",incidents:"Störungen der letzten 30 Tage",noMaint:"Keine geplante Wartung.",noInc:"Keine Störungen in den letzten 30 Tagen.",
+ s_ok:"Betriebsbereit",s_degraded:"Langsam",s_down:"Ausgefallen",s_unknown:"Keine Daten",scheduled:"Geplant",in_progress:"Läuft",completed:"Abgeschlossen",ongoing:"Laufend",
+ investigating:"Wird untersucht",identified:"Ursache gefunden",monitoring:"Wird beobachtet",resolved:"Behoben",
+ uptime:"Verfügbarkeit",days:"{n} Tage",min:"Min.",affects:"Betrifft",updated:"Aktualisiert",stale:"(gespeicherte Meldung; die API antwortet nicht)",
+ footer:"Jede Minute von einem von der Plattform unabhängigen Server aktualisiert, und alle 5 Minuten von außen.",duration:"Dauer",loading:"Wird geladen…",
+ outside:"Von außen gesehen",outsideOk:"antwortet",outsideDown:"antwortet nicht",outsideOld:"keine aktuelle Messung",
+ fallback:"Dies ist die Sicherungskopie, von außerhalb unseres Netzes gemessen: die Hauptseite antwortet nicht. Der lange Verlauf ist erst wieder verfügbar, wenn sie zurück ist.",
+ originStale:"Die Hauptseite wurde seit einer Weile nicht aktualisiert; diese Daten können veraltet sein.",
+ subscribe:"Per E-Mail benachrichtigen",subscribeHelp:"Eine E-Mail, wenn eine Wartung geplant wird, beginnt oder endet, und bei jeder Störungsmeldung. Du bekommst eine Nachricht zur Bestätigung.",subscribeBtn:"Abonnieren",subscribeSent:"Prüfe dein Postfach und bestätige das Abonnement.",subscribeFail:"Senden nicht möglich. Versuche es gleich noch einmal.",email:"du@beispiel.de",
+ confirmada:"Abonnement bestätigt: wir benachrichtigen dich per E-Mail.",baja:"Erledigt: es werden keine Meldungen mehr gesendet.",invalida:"Dieser Link gilt nicht mehr. Abonniere erneut, wenn du Meldungen willst.",
+ feed:"Per RSS abonnieren",backup:"Sicherungskopie außerhalb unseres Netzes",primary:"Hauptseite"},
+it:{title:"Stato di CGuard Pro",ok:"Tutti i sistemi funzionano",degraded:"Prestazioni ridotte",partial:"Interruzione parziale",major:"Interruzione grave",maintenance:"Manutenzione in corso",unknown:"Nessun dato",
+ subok:"Nessun incidente attivo.",subdown:"Ci stiamo lavorando. Le app delle guardie continuano a timbrare offline.",
+ components:"Componenti",maint:"Manutenzioni programmate",incidents:"Incidenti degli ultimi 30 giorni",noMaint:"Nessuna manutenzione programmata.",noInc:"Nessun incidente negli ultimi 30 giorni.",
+ s_ok:"Operativo",s_degraded:"Lento",s_down:"Non disponibile",s_unknown:"Nessun dato",scheduled:"Programmata",in_progress:"In corso",completed:"Completata",ongoing:"In corso",
+ investigating:"In analisi",identified:"Identificato",monitoring:"In osservazione",resolved:"Risolto",
+ uptime:"Disponibilità",days:"{n} giorni",min:"min",affects:"Riguarda",updated:"Aggiornato",stale:"(avviso salvato; l'API non risponde)",
+ footer:"Aggiornato ogni minuto da un server indipendente dalla piattaforma, e ogni 5 minuti dall'esterno.",duration:"Durata",loading:"Caricamento…",
+ outside:"Visto dall'esterno",outsideOk:"risponde",outsideDown:"non risponde",outsideOld:"nessuna misura recente",
+ fallback:"Questa è la copia di riserva, misurata fuori dalla nostra rete: la pagina principale non risponde. Lo storico lungo non è disponibile finché non torna.",
+ originStale:"La pagina principale non si aggiorna da un po'; questi dati potrebbero essere vecchi.",
+ subscribe:"Avvisami via e-mail",subscribeHelp:"Un'e-mail quando una manutenzione viene programmata, inizia o finisce, e a ogni aggiornamento di un incidente. Riceverai un messaggio per confermare.",subscribeBtn:"Iscrivimi",subscribeSent:"Controlla la posta e conferma l'iscrizione.",subscribeFail:"Invio non riuscito. Riprova tra un momento.",email:"tu@esempio.it",
+ confirmada:"Iscrizione confermata: ti avviseremo via e-mail.",baja:"Fatto: non invieremo più avvisi.",invalida:"Questo link non è più valido. Iscriviti di nuovo se vuoi gli avvisi.",
+ feed:"Iscriviti via RSS",backup:"Copia di riserva fuori dalla nostra rete",primary:"Pagina principale"},
+nl:{title:"Status van CGuard Pro",ok:"Alle systemen werken",degraded:"Verminderde prestaties",partial:"Gedeeltelijke storing",major:"Grote storing",maintenance:"Onderhoud bezig",unknown:"Geen gegevens",
+ subok:"Geen actieve storingen.",subdown:"We werken eraan. De bewakers-apps blijven offline inklokken.",
+ components:"Onderdelen",maint:"Gepland onderhoud",incidents:"Storingen van de laatste 30 dagen",noMaint:"Geen gepland onderhoud.",noInc:"Geen storingen in de laatste 30 dagen.",
+ s_ok:"Operationeel",s_degraded:"Traag",s_down:"Uitgevallen",s_unknown:"Geen gegevens",scheduled:"Gepland",in_progress:"Bezig",completed:"Afgerond",ongoing:"Bezig",
+ investigating:"In onderzoek",identified:"Oorzaak gevonden",monitoring:"Onder observatie",resolved:"Opgelost",
+ uptime:"Beschikbaarheid",days:"{n} dagen",min:"min",affects:"Betreft",updated:"Bijgewerkt",stale:"(opgeslagen melding; de API antwoordt niet)",
+ footer:"Elke minuut bijgewerkt vanaf een server los van het platform, en elke 5 minuten van buitenaf.",duration:"Duur",loading:"Laden…",
+ outside:"Van buitenaf gezien",outsideOk:"antwoordt",outsideDown:"antwoordt niet",outsideOld:"geen recente meting",
+ fallback:"Dit is de reservekopie, gemeten buiten ons netwerk: de hoofdpagina antwoordt niet. De lange geschiedenis is niet beschikbaar tot ze terug is.",
+ originStale:"De hoofdpagina is al een tijdje niet bijgewerkt; deze gegevens kunnen oud zijn.",
+ subscribe:"Mail me",subscribeHelp:"Eén e-mail als onderhoud wordt gepland, begint of eindigt, en bij elke update van een storing. Je krijgt een bericht om te bevestigen.",subscribeBtn:"Inschrijven",subscribeSent:"Kijk in je mailbox en bevestig de inschrijving.",subscribeFail:"Versturen lukte niet. Probeer het zo opnieuw.",email:"jij@voorbeeld.nl",
+ confirmada:"Inschrijving bevestigd: we mailen je.",baja:"Klaar: je krijgt geen meldingen meer.",invalida:"Die link is niet meer geldig. Schrijf je opnieuw in als je meldingen wilt.",
+ feed:"Abonneren via RSS",backup:"Reservekopie buiten ons netwerk",primary:"Hoofdpagina"},
+pl:{title:"Stan CGuard Pro",ok:"Wszystkie systemy działają",degraded:"Obniżona wydajność",partial:"Częściowa awaria",major:"Poważna awaria",maintenance:"Trwa konserwacja",unknown:"Brak danych",
+ subok:"Brak aktywnych incydentów.",subdown:"Pracujemy nad tym. Aplikacje strażników nadal rejestrują czas offline.",
+ components:"Składniki",maint:"Zaplanowane konserwacje",incidents:"Incydenty z ostatnich 30 dni",noMaint:"Brak zaplanowanych konserwacji.",noInc:"Brak incydentów w ostatnich 30 dniach.",
+ s_ok:"Działa",s_degraded:"Wolno",s_down:"Nie działa",s_unknown:"Brak danych",scheduled:"Zaplanowana",in_progress:"W toku",completed:"Zakończona",ongoing:"W toku",
+ investigating:"Badamy",identified:"Zidentyfikowano",monitoring:"Obserwujemy",resolved:"Rozwiązano",
+ uptime:"Dostępność",days:"{n} dni",min:"min",affects:"Dotyczy",updated:"Zaktualizowano",stale:"(zapisany komunikat; API nie odpowiada)",
+ footer:"Odświeżane co minutę z serwera niezależnego od platformy i co 5 minut z zewnątrz.",duration:"Czas trwania",loading:"Ładowanie…",
+ outside:"Widok z zewnątrz",outsideOk:"odpowiada",outsideDown:"nie odpowiada",outsideOld:"brak aktualnego pomiaru",
+ fallback:"To kopia zapasowa mierzona spoza naszej sieci: strona główna nie odpowiada. Dłuższa historia będzie niedostępna, dopóki nie wróci.",
+ originStale:"Strona główna od jakiegoś czasu się nie odświeża; te dane mogą być nieaktualne.",
+ subscribe:"Powiadom mnie e-mailem",subscribeHelp:"Jeden e-mail, gdy konserwacja zostanie zaplanowana, rozpocznie się lub zakończy, oraz przy każdej aktualizacji incydentu. Otrzymasz wiadomość do potwierdzenia.",subscribeBtn:"Zapisz mnie",subscribeSent:"Sprawdź pocztę i potwierdź subskrypcję.",subscribeFail:"Nie udało się wysłać. Spróbuj za chwilę.",email:"ty@przyklad.pl",
+ confirmada:"Subskrypcja potwierdzona: będziemy pisać e-mailem.",baja:"Gotowe: nie będziemy już wysyłać powiadomień.",invalida:"Ten link już nie działa. Zapisz się ponownie, jeśli chcesz powiadomienia.",
+ feed:"Subskrybuj przez RSS",backup:"Kopia zapasowa poza naszą siecią",primary:"Strona główna"}};
+var NAMES={es:"Español",en:"English",pt:"Português",fr:"Français",de:"Deutsch",it:"Italiano",nl:"Nederlands",pl:"Polski"};
+var LOCALE={es:"es-EC",en:"en-US",pt:"pt-BR",fr:"fr-FR",de:"de-DE",it:"it-IT",nl:"nl-NL",pl:"pl-PL"};
+var CFG=JSON.parse(document.getElementById("cfg").textContent||"{}");
+var langs=Object.keys(I);
+var nav=(navigator.language||"es").slice(0,2).toLowerCase();
+var L=localStorage.getItem("cgs-lang")||(langs.indexOf(nav)>=0?nav:"es");
+var D=null;try{D=JSON.parse(document.getElementById("data").textContent)}catch(e){D=null}
+var EXT=null,SRC=D?"origin":"none",ORIGIN_OLD=false;
+var sel=document.getElementById("lang");langs.forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=NAMES[k];sel.appendChild(o)});sel.value=L;
+function t(k){return (I[L]||I.es)[k]||I.es[k]||k}
+function fmt(s){if(!s)return"";var d=new Date(s);if(isNaN(d))return String(s);return d.toLocaleString(LOCALE[L]||"es-EC",{dateStyle:"medium",timeStyle:"short"})}
+function hm(s){if(!s)return"";var d=new Date(s);if(isNaN(d))return String(s);return d.toLocaleString(LOCALE[L]||"es-EC",{dateStyle:"short",timeStyle:"short"})}
+function pct(v){return v==null?"—":(Math.round(v*100)/100).toFixed(2)+"%"}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function name(n){return n&&typeof n==="object"?(n[L]||n.en||n.es||""):String(n||"")}
+function ageMin(s){var d=new Date(s);return isNaN(d)?1e9:(Date.now()-d.getTime())/60000}
+function fromExternal(x){
+ // La copia de fuera tiene la misma forma; sólo le faltan los 90 días.
+ return {generatedAt:x.generatedAt,overall:x.overall,components:x.components,maintenance:x.maintenance||[],noticesStale:!!x.noticesStale,incidents:x.incidents||[],external:null,fallback:true};
+}
+function render(){
+ document.documentElement.lang=L;
+ document.querySelectorAll("[data-i]").forEach(function(e){e.textContent=t(e.getAttribute("data-i"))});
+ if(!D){document.getElementById("app").innerHTML='<div class="hero unknown"><span>?</span><div>'+t("unknown")+'</div></div>';return}
+ var o=D.overall||"unknown",h='<div class="hero '+o+'"><span>'+(o==="ok"?"✓":o==="maintenance"?"⚙":o==="unknown"?"?":"!")+'</span><div>'+t(o)+'<small>'+(o==="ok"?t("subok"):o==="maintenance"||o==="unknown"?"":t("subdown"))+'</small></div></div>';
+ if(D.fallback)h+='<div class="note bad">'+t("fallback")+'</div>';
+ else if(ORIGIN_OLD)h+='<div class="note">'+t("originStale")+'</div>';
+ var q=new URLSearchParams(location.search).get("suscripcion");
+ if(q&&I.es[q])h+='<div class="note '+(q==="invalida"?"bad":"ok")+'">'+t(q)+'</div>';
+ var ext=(D.external&&D.external.components)||(EXT&&EXT.components?EXT.components.reduce(function(a,c){a[c.id]=c.state;return a},{}):null);
+ var extAt=(D.external&&D.external.generatedAt)||(EXT&&EXT.generatedAt)||null;
+ var extOld=extAt?ageMin(extAt)>20:true;
+ h+='<div class="card"><h2>'+t("components")+'</h2>';
+ D.components.forEach(function(c){
+  var n=c.daily?c.daily.length:0;
+  h+='<div class="comp"><div class="name">'+esc(name(c.name))+'</div><div class="state"><span class="dot '+c.state+'"></span>'+t("s_"+c.state)+'</div>';
+  if(ext&&!D.fallback){var es=ext[c.id];h+='<div class="ext">'+t("outside")+': '+(extOld||!es?t("outsideOld"):(es==="down"?"✗ "+t("outsideDown"):"✓ "+t("outsideOk")))+'</div>'}
+  if(n){h+='<div class="bars" style="grid-template-columns:repeat('+n+',1fr)">'+c.daily.map(function(d){return'<i class="'+d.s+'" title="'+d.d+(d.down?" · "+d.down+" "+t("min"):"")+'"></i>'}).join("")+'</div>';
+   var u=c.uptime||{};h+='<div class="up"><span>'+t("days").replace("{n}",n)+'</span><span>'+t("uptime")+' 24h '+pct(u["24h"])+' · 7d '+pct(u["7d"])+(u["30d"]!=null?' · 30d '+pct(u["30d"]):"")+(u["90d"]!=null?' · 90d '+pct(u["90d"]):"")+'</span></div>'}
+  h+='</div>';
+ });
+ h+='</div><div class="card"><h2>'+t("maint")+(D.noticesStale?' <span style="text-transform:none;letter-spacing:0">'+t("stale")+'</span>':"")+'</h2>';
+ if(!D.maintenance.length)h+='<p class="empty">'+t("noMaint")+'</p>';
+ D.maintenance.forEach(function(m){h+='<div class="m"><div class="t">'+esc(name(m.title))+'<span class="tag '+m.status+'">'+t(m.status)+'</span></div><div class="d">'+fmt(m.startsAt)+(m.endsAt?" → "+fmt(m.endsAt):"")+(m.affects&&m.affects.length?' · '+t("affects")+': '+m.affects.map(function(a){var c=D.components.filter(function(x){return x.id===a})[0];return esc(c?name(c.name):a)}).join(", "):"")+'</div>'+(m.reason?'<div class="d">'+esc(name(m.reason))+'</div>':"")+'</div>'});
+ h+='</div><div class="card"><h2>'+t("incidents")+'</h2>';
+ if(!D.incidents.length)h+='<p class="empty">'+t("noInc")+'</p>';
+ D.incidents.forEach(function(i){
+  var comps=i.components.map(function(c){return esc(name(c.name))}).join(", ");
+  if(i.manual){
+   h+='<div class="m"><div class="t">'+esc(i.title)+'<span class="tag '+i.status+'">'+t(i.status)+'</span></div><div class="d">'+fmt(i.start)+(i.end?" → "+fmt(i.end):"")+(comps?' · '+t("affects")+': '+comps:"")+'</div>';
+   if(i.updates&&i.updates.length){h+='<ul class="tl">'+i.updates.slice().reverse().map(function(u){return'<li><b>'+t(u.status)+'</b> <span>'+hm(u.at)+'</span><br>'+esc(u.text)+'</li>'}).join("")+'</ul>'}
+   h+='</div>';
+  }else{
+   h+='<div class="m"><div class="t">'+comps+(i.ongoing?'<span class="tag ongoing">'+t("ongoing")+'</span>':"")+'</div><div class="d">'+fmt(i.start)+(i.end?" → "+fmt(i.end):"")+' · '+t("duration")+' '+i.minutes+' '+t("min")+'</div></div>';
+  }
+ });
+ h+='</div>';
+ if(CFG.subscribe){h+='<div class="card"><h2>'+t("subscribe")+'</h2><p class="d" style="color:var(--muted);font-size:13px;margin:0 0 10px">'+t("subscribeHelp")+'</p><form class="sub" id="sub"><input type="email" required placeholder="'+esc(t("email"))+'" id="email" autocomplete="email"><button type="submit">'+t("subscribeBtn")+'</button></form><div id="submsg" class="d" style="margin-top:8px;font-size:13px"></div><div class="links"><a href="feed.xml">'+t("feed")+'</a></div></div>'}
+ document.getElementById("app").innerHTML=h;
+ document.getElementById("updated").textContent=t("updated")+" "+fmt(D.generatedAt);
+ var b=document.getElementById("backup");
+ if(CFG.self==="github"&&CFG.primary)b.innerHTML='<a href="'+esc(CFG.primary)+'">'+t("primary")+'</a>';
+ else if(CFG.backup)b.innerHTML='<a href="'+esc(CFG.backup)+'">'+t("backup")+'</a>';
+ var f=document.getElementById("sub");
+ if(f)f.onsubmit=function(ev){ev.preventDefault();var em=document.getElementById("email").value;var msg=document.getElementById("submsg");msg.textContent="…";
+  fetch(CFG.subscribe,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:em,locale:L})}).then(function(r){if(!r.ok)throw 0;msg.textContent=t("subscribeSent");f.reset()}).catch(function(){msg.textContent=t("subscribeFail")})};
+}
+function getJSON(url,ms){return new Promise(function(res,rej){var c=new AbortController();var to=setTimeout(function(){c.abort()},ms);fetch(url+(url.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store",signal:c.signal}).then(function(r){clearTimeout(to);if(!r.ok)throw 0;return r.json()}).then(res,rej)})}
+function load(){
+ var originUrl=(CFG.origin?CFG.origin.replace(/\/$/,"")+"/":"")+"status.json";
+ var pExt=CFG.external?getJSON(CFG.external,8000).catch(function(){return null}):Promise.resolve(null);
+ return getJSON(originUrl,8000).then(function(j){return j},function(){return null}).then(function(j){
+  return pExt.then(function(x){
+   EXT=x;
+   if(j&&ageMin(j.generatedAt)<=10){D=j;SRC="origin";ORIGIN_OLD=false}
+   else if(j&&(!x||ageMin(j.generatedAt)<=ageMin(x.generatedAt))){D=j;SRC="origin";ORIGIN_OLD=true}
+   else if(x){D=fromExternal(x);SRC="external"}
+   else if(j){D=j;SRC="origin";ORIGIN_OLD=true}
+   render();
+  });
+ });
+}
+sel.onchange=function(){L=sel.value;localStorage.setItem("cgs-lang",L);render()};
+render();
+if(!D)load();else if(CFG.external)load();
+setInterval(load,60000);
+})();
+</script>
+</body>
+</html>

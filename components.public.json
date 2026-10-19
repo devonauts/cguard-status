@@ -1,0 +1,76 @@
+{
+  "public_url": "https://status.cguardpro.com",
+  "origin_public_url": "https://estado-origen.cguardpro.com",
+  "backup_url": "https://devonauts.github.io/cguard-status/",
+  "external_url": "https://raw.githubusercontent.com/devonauts/cguard-status/data/external.json",
+  "notices_url": "https://api.cguardpro.com/public/estado",
+  "subscribe_url": "https://api.cguardpro.com/public/estado/suscribir",
+  "slow_seconds": 5,
+  "timeout_seconds": 12,
+  "slow_alert_minutes": 5,
+  "components": [
+    {
+      "id": "crm",
+      "name": {
+        "es": "CRM (app.cguardpro.com)",
+        "en": "CRM (app.cguardpro.com)"
+      },
+      "url": "https://app.cguardpro.com/",
+      "marker": "cg-copia"
+    },
+    {
+      "id": "api",
+      "name": {
+        "es": "API y apps móviles",
+        "en": "API and mobile apps"
+      },
+      "url": "https://api.cguardpro.com/api/health",
+      "marker": "healthy"
+    },
+    {
+      "id": "cliente",
+      "name": {
+        "es": "Portal del cliente (Mi Seguridad)",
+        "en": "Client portal (Mi Seguridad)"
+      },
+      "url": "https://client.cguardpro.com/",
+      "marker": "Mi Seguridad"
+    },
+    {
+      "id": "socios",
+      "name": {
+        "es": "Panel de socios",
+        "en": "Partner panel"
+      },
+      "url": "https://partners.cguardpro.com/",
+      "marker": "Partner panel"
+    },
+    {
+      "id": "radio",
+      "name": {
+        "es": "Radio en vivo",
+        "en": "Live radio"
+      },
+      "url": "https://rtc.mainconnector.com/",
+      "marker": "",
+      "accept_codes": [
+        200,
+        301,
+        302,
+        400,
+        404,
+        426
+      ]
+    },
+    {
+      "id": "web",
+      "name": {
+        "es": "Sitio web",
+        "en": "Website"
+      },
+      "url": "https://cguardpro.com/",
+      "marker": "CGuardPro"
+    }
+  ],
+  "_": "Copia pública (GitHub Actions) de la configuración de status.cguardpro.com: sin direcciones de la red de la casa."
+}

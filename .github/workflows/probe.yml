@@ -1,0 +1,36 @@
+# Sonda de status.cguardpro.com DESDE FUERA de nuestra red, cada 5 minutos.
+# Mide las mismas piezas que la página de la casa, comprueba que esa página
+# sigue fresca y publica external.json en la rama `data` (un solo commit,
+# reescrito cada vez: sin historial de git que crezca). Avisa por Telegram
+# sin pasar por la casa, que puede ser justo lo que está caído.
+name: sonda desde fuera
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: sonda
+  cancel-in-progress: false
+jobs:
+  sondear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: estado anterior (rama data)
+        run: |
+          git fetch --depth=1 origin data 2>/dev/null && git show origin/data:external.json > external.json || echo '{}' > external.json
+      - name: sondear
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
+        run: python3 -I cguard-status-probe.py --external --conf components.public.json --state external.json --out external.json
+      - name: publicar en la rama data
+        run: |
+          mkdir -p /tmp/data && cp external.json /tmp/data/
+          cd /tmp/data && git init -q -b data && git config user.name "sonda" && git config user.email "sonda@users.noreply.github.com"
+          git add external.json && git commit -q -m "external $(date -u +%FT%TZ)"
+          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
