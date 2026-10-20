@@ -6,7 +6,7 @@
 <title>Estado de CGuard Pro</title>
 <meta name="description" content="Estado en tiempo real de la plataforma CGuard Pro: CRM, API, apps, portal del cliente, panel de socios y radio.">
 <meta http-equiv="refresh" content="300">
-<link rel="alternate" type="application/atom+xml" title="Estado de CGuard Pro" href="feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Estado de CGuard Pro" href="https://estado-origen.cguardpro.com/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v9c0 7.5 5.1 12.4 12 14 6.9-1.6 12-6.5 12-14V7z' fill='%230ea5e9'/%3E%3C/svg%3E">
 <style>
 :root{--bg:#0b1220;--card:#111a2e;--line:#1f2a44;--fg:#e6edf7;--muted:#8b98b3;--ok:#22c55e;--warn:#f59e0b;--down:#ef4444;--maint:#38bdf8;--none:#2a3650}
@@ -53,7 +53,7 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;text-align:center}foote
 <footer><span data-i="footer">Se actualiza cada minuto desde un servidor independiente de la plataforma, y cada 5 minutos desde fuera.</span> · <span id="updated"></span><br><span id="backup"></span></footer>
 </div>
 <script id="data" type="application/json">null</script>
-<script id="cfg" type="application/json">{"self": "github", "origin": "https://estado-origen.cguardpro.com", "external": "https://raw.githubusercontent.com/devonauts/cguard-status/data/external.json", "subscribe": "https://api.cguardpro.com/public/estado/suscribir", "backup": "https://devonauts.github.io/cguard-status/", "primary": "https://status.cguardpro.com"}</script>
+<script id="cfg" type="application/json">{"self": "github", "origin": "https://estado-origen.cguardpro.com", "external": "https://raw.githubusercontent.com/devonauts/cguard-status/data/external.json", "subscribe": "https://api.cguardpro.com/public/estado/suscribir", "backup": "https://devonauts.github.io/cguard-status/", "primary": "https://status.cguardpro.com", "feed": "https://estado-origen.cguardpro.com/feed.xml"}</script>
 <script>
 (function(){
 var I={
@@ -218,7 +218,7 @@ function render(){
   }
  });
  h+='</div>';
- if(CFG.subscribe){h+='<div class="card"><h2>'+t("subscribe")+'</h2><p class="d" style="color:var(--muted);font-size:13px;margin:0 0 10px">'+t("subscribeHelp")+'</p><form class="sub" id="sub"><input type="email" required placeholder="'+esc(t("email"))+'" id="email" autocomplete="email"><button type="submit">'+t("subscribeBtn")+'</button></form><div id="submsg" class="d" style="margin-top:8px;font-size:13px"></div><div class="links"><a href="feed.xml">'+t("feed")+'</a></div></div>'}
+ if(CFG.subscribe){h+='<div class="card"><h2>'+t("subscribe")+'</h2><p class="d" style="color:var(--muted);font-size:13px;margin:0 0 10px">'+t("subscribeHelp")+'</p><form class="sub" id="sub"><input type="email" required placeholder="'+esc(t("email"))+'" id="email" autocomplete="email"><button type="submit">'+t("subscribeBtn")+'</button></form><div id="submsg" class="d" style="margin-top:8px;font-size:13px"></div><div class="links"><a href="'+esc(CFG.feed||"feed.xml")+'">'+t("feed")+'</a></div></div>'}
  document.getElementById("app").innerHTML=h;
  document.getElementById("updated").textContent=t("updated")+" "+fmt(D.generatedAt);
  var b=document.getElementById("backup");

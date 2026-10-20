@@ -477,7 +477,7 @@ def render_feed(data, conf):
     entries.sort(key=lambda e: str(e[0]), reverse=True)
     xml = ['<?xml version="1.0" encoding="utf-8"?>', '<feed xmlns="http://www.w3.org/2005/Atom">',
            '<title>Estado de CGuard Pro · CGuard Pro Status</title>', f'<id>{escape(url)}/</id>',
-           f'<link rel="alternate" href="{escape(url)}/"/>', f'<link rel="self" href="{escape(url)}/feed.xml"/>',
+           f'<link rel="alternate" href="{escape(url)}/"/>', f'<link rel="self" href="{escape((conf.get("origin_public_url") or url).rstrip("/"))}/feed.xml"/>',
            f'<updated>{escape(data["generatedAt"])}</updated>']
     for updated, title, eid, html in entries[:50]:
         xml.append(f'<entry><title>{escape(title)}</title><id>{escape(eid)}</id><updated>{escape(str(updated))}</updated>'
@@ -496,7 +496,7 @@ PAGE = r"""<!doctype html>
 <title>Estado de CGuard Pro</title>
 <meta name="description" content="Estado en tiempo real de la plataforma CGuard Pro: CRM, API, apps, portal del cliente, panel de socios y radio.">
 <meta http-equiv="refresh" content="300">
-<link rel="alternate" type="application/atom+xml" title="Estado de CGuard Pro" href="feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Estado de CGuard Pro" href="__FEED__">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 4 7v9c0 7.5 5.1 12.4 12 14 6.9-1.6 12-6.5 12-14V7z' fill='%230ea5e9'/%3E%3C/svg%3E">
 <style>
 :root{--bg:#0b1220;--card:#111a2e;--line:#1f2a44;--fg:#e6edf7;--muted:#8b98b3;--ok:#22c55e;--warn:#f59e0b;--down:#ef4444;--maint:#38bdf8;--none:#2a3650}
@@ -708,7 +708,7 @@ function render(){
   }
  });
  h+='</div>';
- if(CFG.subscribe){h+='<div class="card"><h2>'+t("subscribe")+'</h2><p class="d" style="color:var(--muted);font-size:13px;margin:0 0 10px">'+t("subscribeHelp")+'</p><form class="sub" id="sub"><input type="email" required placeholder="'+esc(t("email"))+'" id="email" autocomplete="email"><button type="submit">'+t("subscribeBtn")+'</button></form><div id="submsg" class="d" style="margin-top:8px;font-size:13px"></div><div class="links"><a href="feed.xml">'+t("feed")+'</a></div></div>'}
+ if(CFG.subscribe){h+='<div class="card"><h2>'+t("subscribe")+'</h2><p class="d" style="color:var(--muted);font-size:13px;margin:0 0 10px">'+t("subscribeHelp")+'</p><form class="sub" id="sub"><input type="email" required placeholder="'+esc(t("email"))+'" id="email" autocomplete="email"><button type="submit">'+t("subscribeBtn")+'</button></form><div id="submsg" class="d" style="margin-top:8px;font-size:13px"></div><div class="links"><a href="'+esc(CFG.feed||"feed.xml")+'">'+t("feed")+'</a></div></div>'}
  document.getElementById("app").innerHTML=h;
  document.getElementById("updated").textContent=t("updated")+" "+fmt(D.generatedAt);
  var b=document.getElementById("backup");
@@ -745,6 +745,7 @@ setInterval(load,60000);
 
 
 def page_config(conf, self_kind):
+    origin = conf.get("origin_public_url") or ""
     return {
         "self": self_kind,
         "origin": conf.get("origin_public_url") if self_kind == "github" else "",
@@ -752,13 +753,16 @@ def page_config(conf, self_kind):
         "subscribe": conf.get("subscribe_url"),
         "backup": conf.get("backup_url"),
         "primary": conf.get("public_url"),
+        # the feed only exists where the probe runs (the house); the copy links to it there
+        "feed": (origin.rstrip("/") + "/feed.xml") if (self_kind == "github" and origin) else "feed.xml",
     }
 
 
 def render_page(data, conf, self_kind="origin"):
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/") if data is not None else "null"
     cfg = json.dumps(page_config(conf, self_kind), ensure_ascii=False).replace("</", "<\\/")
-    return PAGE.replace("__DATA__", payload).replace("__CFG__", cfg)
+    feed = page_config(conf, self_kind)["feed"]
+    return PAGE.replace("__DATA__", payload).replace("__CFG__", cfg).replace("__FEED__", feed)
 
 
 # ── Modo casa ───────────────────────────────────────────────────────────────
